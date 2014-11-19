@@ -11,8 +11,11 @@
 <div class="container" ng-app="trapeze">
     <div class="row" ng-controller="controller as foo">
         <form>
+            <input type="text" placeholder="accuracy" ng-model="foo.eps"/>
+            <input type="text" placeholder="a" ng-model="foo.a"/>
+            <input type="text" placeholder="b" ng-model="foo.b"/>
             <input type="text" placeholder="y(x)" ng-model="foo.dep"/>
-            <button ng-click="foo.build(foo.dep)">Build!</button>
+            <button ng-click="foo.build(foo.dep, foo.eps, foo.a, foo.b)">Build!</button>
         </form>
         <div class="center-block col-md-1">
             {{foo.var}}
