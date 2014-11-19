@@ -8,6 +8,9 @@
     <script src="index.js"></script>
 </head>
 <body>
+<br>
+<br>
+<br>
 <div class="container" ng-app="trapeze">
     <div class="row" ng-controller="controller as foo">
         <form>
@@ -15,13 +18,19 @@
             <input type="text" placeholder="a" ng-model="foo.a"/>
             <input type="text" placeholder="b" ng-model="foo.b"/>
             <input type="text" placeholder="y(x)" ng-model="foo.dep"/>
-            <button ng-click="foo.build(foo.dep, foo.eps, foo.a, foo.b)">Build!</button>
+            <input type="text" placeholder="n" ng-model="foo.n"/>
+            <button ng-click="foo.build(foo.dep, foo.eps, foo.a, foo.b, foo.n)">Build!</button>
         </form>
         <div class="center-block col-md-1">
-            {{foo.var}}
+            <h1>{{foo.FinalInt}}</h1>
         </div>
     </div>
+    <div class="row">
+        <canvas id="canvas" height="450" width="600" style="width: 600px; height: 450px;"></canvas>
+    </div>
+    <div class="row">
+        <canvas id="canvas1" height="450" width="600" style="width: 600px; height: 450px;"></canvas>
+    </div>
 </div>
-<canvas id="canvas" height="450" width="600" style="width: 600px; height: 450px;"></canvas>
 </body>
 </html>
