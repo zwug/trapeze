@@ -4,74 +4,101 @@
 var app = new angular.module('trapeze', []);
 
 
-app.controller('controller', function(){
-    var FinalInt;
-    this.build = function(dep, eps, a, b, n){
+app.controller('controller', function () {
+    this.finalInt = 0;
+    this.a = 0;
+    this.b = 10;
+    this.dep = "sin(x)";
+    this.n = 2;
+    this.eps = 1;
+
+    this.build = function (dep, a, b, n, accur) {
         Chart.defaults = {
             showScale: false
         };
-        eps = eval(eps);
         a = eval(a);
         b = eval(b);
-        var y=[];
+        var eps = (b - a) / 150;
+
+        var y = [];
+        var Xvalue;
         var xVals = [];
-        for(var x = a; x <= b;){
-            y.push(eval(dep));
-            xVals.push(x);
-            x = x + eps;
+        for (Xvalue = a; Xvalue <= b;) {
+            y.push(Parser.evaluate(dep, { x: Xvalue }));
+            xVals.push(Xvalue.toFixed(1));
+            Xvalue += eps;
         }
 
         //trapeze
-        var h = (b - a) / n;
-        var x = a;
+
         var Int = 0;
+        var IntNext = 2 * accur;
+        while (Math.abs(IntNext - Int) > accur) {
+            Xvalue = a;
+            n *= 2;
+            var h = (b - a) / n;
+            Int = IntNext;
+            IntNext = 0;
+            for (var i = 0; i <= n; ++i) {
+                f1 = Parser.evaluate(dep, { x: Xvalue });
+                Xvalue += h;
+                f2 = Parser.evaluate(dep, { x: Xvalue });
+                IntNext += (f1 + f2) * h / 2;
+            }
+            console.log(n);
+            console.log(IntNext);
+            console.log("------------------");
+        }
+
+        Xvalue = a;
+        n = 10;
+        var h = (b - a) / n;
         var IntVals = [];
         var IntXvals = [];
-        for(var i = 0; i < n; ++i){
-            f1 = eval(dep);
+        for (var i = 0; i <= n; ++i) {
+            f1 = Parser.evaluate(dep, { x: Xvalue });
             IntVals.push(f1);
-            IntXvals.push(x);
-            x += h;
-            f2 = eval(dep);
-            Int += (f1 + f2) * h / 2;
+            IntXvals.push(Xvalue);
+            Xvalue += h;
         }
-        FinalInt = Int;
-        console.log(FinalInt);
+
+        this.finalInt = IntNext.toFixed(2);
+        console.log(this.finalInt);
 
         var lineChartData = {
-            labels : xVals,
-            datasets : [
+            labels: xVals,
+            datasets: [
                 {
-                    fillColor : "rgba(220,220,220,0.5)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
-                    pointStrokeColor : "#fff",
-                    data : y
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    data: y
                 }
             ]
         }
         var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData, {
             bezierCurve: false,
-            pointDotRadius : 0,
+            pointDotRadius: 0,
             scaleIntegersOnly: true,
             maintainAspectRatio: true,
-            scaleShowLabels: false
+            scaleShowLabels: true
         });
         var lineChartData1 = {
-            labels : IntXvals,
-            datasets : [
+            labels: IntXvals,
+            datasets: [
                 {
-                    fillColor : "rgba(220,220,220,0.5)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
-                    pointStrokeColor : "#fff",
-                    data : IntVals
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    data: IntVals
                 }
             ]
         }
         var myLine1 = new Chart(document.getElementById("canvas1").getContext("2d")).Line(lineChartData1, {
             bezierCurve: false,
-            pointDotRadius : 0,
+            pointDotRadius: 0,
             scaleIntegersOnly: true,
             maintainAspectRatio: true
         });

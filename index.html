@@ -5,31 +5,44 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/Chart.js/Chart.min.js"></script>
+    <script src="bower_components/js-expression-eval/parser.js" type="text/javascript"></script>
     <script src="index.js"></script>
 </head>
 <body>
 <br>
 <br>
 <br>
-<div class="container" ng-app="trapeze">
-    <div class="row" ng-controller="controller as foo">
+
+<div class="container" ng-app="trapeze" ng-controller="controller as foo">
+    <div class="row">
         <form>
-            <input type="text" placeholder="accuracy" ng-model="foo.eps"/>
-            <input type="text" placeholder="a" ng-model="foo.a"/>
-            <input type="text" placeholder="b" ng-model="foo.b"/>
-            <input type="text" placeholder="y(x)" ng-model="foo.dep"/>
-            <input type="text" placeholder="n" ng-model="foo.n"/>
-            <button ng-click="foo.build(foo.dep, foo.eps, foo.a, foo.b, foo.n)">Build!</button>
+            <div class="row">
+                <div class="col-md-offset-3 col-md-6" style="padding-bottom: 30px">
+                    <span>left border (a)</span><input type="text" placeholder="a" ng-model="foo.a"/>
+                    <span>right border (b)</span><input type="text" placeholder="b" ng-model="foo.b"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-1 col-md-10">
+                    <span>function f(x)</span><input type="text" placeholder="y(x)" ng-model="foo.dep"/>
+                    <span>Initial quantity of trapezes</span><input type="text" placeholder="n" ng-model="foo.n"/>
+                    <span>accuracy</span><input type="text" placeholder="accuracy" ng-model="foo.eps"/>
+                    <button class="btn-success" ng-click="foo.build(foo.dep, foo.a, foo.b, foo.n, foo.eps)">Build!
+                    </button>
+                </div>
+            </div>
         </form>
         <div class="center-block col-md-1">
-            <h1>{{foo.FinalInt}}</h1>
+            <h1 ng-bind="foo.finalInt"></h1>
         </div>
     </div>
     <div class="row">
-        <canvas id="canvas" height="450" width="600" style="width: 600px; height: 450px;"></canvas>
+        <canvas id="canvas" height="600" width="1200" style="width: 600px; height: 450px;"></canvas>
     </div>
     <div class="row">
-        <canvas id="canvas1" height="450" width="600" style="width: 600px; height: 450px;"></canvas>
+        <h4 ng-show="foo.finalInt">Trapeze example with n = 10</h4>
+        <canvas id="canvas1" height="600" width="1200" style="width: 600px; height: 450px;"
+                title="Пример разбиения на трапеции с n = 3"></canvas>
     </div>
 </div>
 </body>
