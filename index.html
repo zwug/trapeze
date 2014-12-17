@@ -25,6 +25,8 @@
             <div class="row">
                 <div class="col-md-offset-1 col-md-10">
                     <span>function f(x)</span><input type="text" placeholder="y(x)" ng-model="foo.dep"/>
+                    <button class="btn-warning" ng-click="foo.update()">From math.txt
+                    </button>
                     <span>Initial quantity of trapezes</span><input type="text" placeholder="n" ng-model="foo.n"/>
                     <span>accuracy</span><input type="text" placeholder="accuracy" ng-model="foo.eps"/>
                     <button class="btn-success" ng-click="foo.build(foo.dep, foo.a, foo.b, foo.n, foo.eps)">Build!

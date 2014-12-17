@@ -4,13 +4,33 @@
 var app = new angular.module('trapeze', []);
 
 
-app.controller('controller', function () {
+app.controller('controller', function ($http) {
     this.finalInt = 0;
-    this.a = 0;
-    this.b = 10;
-    this.dep = "sin(x)";
+    this.a = 1;
+    this.b = 11;
     this.n = 2;
     this.eps = 1;
+    var funcArr = [];
+    this.dep = "sin(x)";
+
+    this.fromTxt = function () {
+        $http.get('math.txt').success(function (data, status) {
+            if (data && status === 200) {
+                funcArr = data.split(';');
+            }
+        }).then(function () {
+            return funcArr[0];
+        })
+
+    };
+    this.fromTxt();
+
+    this.update = function(){
+        this.fromTxt();
+        this.dep = funcArr[0];
+    }
+
+
 
     this.build = function (dep, a, b, n, accur) {
         Chart.defaults = {
@@ -103,4 +123,5 @@ app.controller('controller', function () {
             maintainAspectRatio: true
         });
     };
-});
+})
+;
