@@ -53,16 +53,17 @@ app.controller('controller', function ($http) {
 
         var Int = 0;
         var IntNext = 2 * accur;
-        while (Math.abs(IntNext - Int) > accur && n < 30000) {
+        var func = Parser.parse(dep);
+        while (Math.abs(IntNext - Int) > accur) {
             Xvalue = a;
             n *= 2;
             var h = (b - a) / n;
             Int = IntNext;
             IntNext = 0;
             for (var i = 0; i <= n; ++i) {
-                var f1 = Parser.evaluate(dep, { x: Xvalue });
+                var f1 = func.evaluate({ x: Xvalue });
                 Xvalue += h;
-                var f2 = Parser.evaluate(dep, { x: Xvalue });
+                var f2 = func.evaluate({ x: Xvalue });
                 IntNext += (f1 + f2) * h / 2;
             }
             console.log(n);
@@ -77,7 +78,7 @@ app.controller('controller', function ($http) {
         var IntVals = [];
         var IntXvals = [];
         for (var i = 0; i <= n; ++i) {
-            f1 = Parser.evaluate(dep, { x: Xvalue });
+            f1 = func.evaluate({ x: Xvalue });
             IntVals.push(f1);
             IntXvals.push(Xvalue);
             Xvalue += h;
