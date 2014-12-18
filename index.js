@@ -9,7 +9,7 @@ app.controller('controller', function ($http) {
     this.a = 1;
     this.b = 11;
     this.n = 2;
-    this.eps = 1;
+    this.eps = 0.001;
     var funcArr = [];
     this.dep = "sin(x)";
 
@@ -53,20 +53,21 @@ app.controller('controller', function ($http) {
 
         var Int = 0;
         var IntNext = 2 * accur;
-        while (Math.abs(IntNext - Int) > accur) {
+        while (Math.abs(IntNext - Int) > accur && n < 30000) {
             Xvalue = a;
             n *= 2;
             var h = (b - a) / n;
             Int = IntNext;
             IntNext = 0;
             for (var i = 0; i <= n; ++i) {
-                f1 = Parser.evaluate(dep, { x: Xvalue });
+                var f1 = Parser.evaluate(dep, { x: Xvalue });
                 Xvalue += h;
-                f2 = Parser.evaluate(dep, { x: Xvalue });
+                var f2 = Parser.evaluate(dep, { x: Xvalue });
                 IntNext += (f1 + f2) * h / 2;
             }
             console.log(n);
             console.log(IntNext);
+            console.log(Math.abs(IntNext - Int));
             console.log("------------------");
         }
 
